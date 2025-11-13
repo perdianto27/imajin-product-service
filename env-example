@@ -1,0 +1,16 @@
+NODE_ENV=development
+
+# JWT
+JWT_SECRET=supersecretjwtkey123
+JWT_EXPIRES=1d
+
+# DB
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=wom-book
+DB_USER=root
+DB_PASS=
+
+# LIMITER
+TIME_REMAINING=300000 # contoh: 15 * 60 * 1000 = 900000/15 Menit
+MAX_ATTEMPT=3

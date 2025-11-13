@@ -1,0 +1,389 @@
+{
+	"info": {
+		"_postman_id": "5bb686d3-f51e-464d-b22e-075773c7f1af",
+		"name": "Imajin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "9773676"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "List User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/user"
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dira@gmail.com\",\r\n    \"roleId\": 1,\r\n    \"name\": \"Dira\",\r\n    \"password\": \"Password2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/user"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Add to Cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": \"89375938-f650-4490-a2bb-75bca636331a\",\r\n    \"quantity\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/cart"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart/item/:productId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart",
+								"item",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "531b8a11-c0ef-4a8a-8e71-0363d98b5e78"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"paymentChannel\": \"BCA\",\r\n  \"paymentReference\": \"VA9876543210\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/cart/checkout"
+					},
+					"response": [
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"paymentChannel\": \"GOPAY\",\r\n  \"paymentReference\": \"GP-20251004-00123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/cart/checkout"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "54"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"36-g/BLBM1RZQYtB9tJOEIC8Zv3tbQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 04 Oct 2025 14:57:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseCode\": 400,\n    \"responseDesc\": \"Keranjang kosong\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"paymentChannel\": \"BCA\",\r\n  \"paymentReference\": \"VA9876543210\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/cart/checkout"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "357"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"165-Vz8t6Ey+Ax0vUAJfLJQ6V/0INIk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 04 Oct 2025 15:06:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"responseCode\": 200,\n    \"responseDesc\": \"Checkout berhasil\",\n    \"data\": {\n        \"id\": \"7985a39a-a6ad-45f0-8111-f73665b39a5e\",\n        \"created_at\": \"2025-10-04T15:06:45.249Z\",\n        \"updated_at\": \"2025-10-04T15:06:45.249Z\",\n        \"email\": \"perdi_27email@gmail.com\",\n        \"order_number\": \"ORD-1759590405249\",\n        \"total_amount\": 300000,\n        \"status\": \"pending\",\n        \"payment_channel\": \"BCA\",\n        \"payment_reference\": \"VA9876543210\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Add Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"sku\": \"MMKN-M-2025\",\r\n  \"name\": \"Meja Makan\",\r\n  \"description\": \"Terbuat dari kayu jati\",\r\n  \"price\": 800000.00,\r\n  \"stock\": 22,\r\n  \"is_active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/product"
+					},
+					"response": []
+				},
+				{
+					"name": "List Product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"sku\": \"MMKN-M-2025\",\r\n  \"name\": \"Meja Makan\",\r\n  \"description\": \"Terbuat dari kayu jati\",\r\n  \"price\": 800000.00,\r\n  \"stock\": 22,\r\n  \"is_active\": true\r\n}"
+						},
+						"url": "{{base_url}}/product"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "Checkout List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{auth}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/report/checkout-list"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const res = pm.response.json();\r",
+							"pm.environment.set(\"auth\", res.data.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"ade@yahoo.com\",\r\n    \"password\": \"Password2025\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}/auth/login"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "auth",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

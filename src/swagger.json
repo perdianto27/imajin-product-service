@@ -1,0 +1,185 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Imajin Product Service API",
+    "version": "1.0.0",
+    "description": "API untuk Imajin Product"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7000",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number" },
+          "stock": { "type": "integer" },
+          "is_active": { "type": "boolean" }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string", "format": "uuid" },
+          "quantity": { "type": "integer" }
+        }
+      },
+      "CheckoutRequest": {
+        "type": "object",
+        "properties": {
+          "paymentChannel": { "type": "string" },
+          "paymentReference": { "type": "string" }
+        },
+        "required": ["paymentChannel"]
+      }
+    }
+  },
+  "security": [
+    { "bearerAuth": [] }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "roleId": { "type": "integer" },
+                  "name": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "roleId", "name", "password"],
+                "example": {
+                  "email": "endo@gmail.com",
+                  "roleId": 1,
+                  "name": "Endo",
+                  "password": "Password2025"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User berhasil dibuat" },
+          "400": { "description": "email is required" }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "List User",
+        "responses": {
+          "200": { "description": "Daftar list user" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email","password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login berhasil" },
+          "401": { "description": "Email atau password salah" }
+        }
+      }
+    },
+    "/product": {
+      "get": {
+        "tags": ["Produk"],
+        "summary": "List Produk",
+        "responses": {
+          "200": { "description": "Daftar Produk tersedia" }
+        }
+      },
+      "post": {
+        "tags": ["Produk"],
+        "summary": "Tambah Produk (admin)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Product" } } }
+        },
+        "responses": {
+          "200": { "description": "Produk berhasil ditambahkan" }
+        }
+      }
+    },
+    "/cart": {
+      "post": {
+        "tags": ["Keranjang"],
+        "summary": "Tambah Produk ke keranjang",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CartItem" } } }
+        },
+        "responses": { "200": { "description": "Produk berhasil ditambahkan ke keranjang" } }
+      }
+    },
+    "/cart/item/{productId}": {
+      "delete": {
+        "tags": ["Keranjang"],
+        "summary": "Hapus Produk dari keranjang",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "productId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Produk berhasil dihapus dari keranjang" } }
+      }
+    },
+    "/cart/checkout": {
+      "post": {
+        "tags": ["Keranjang"],
+        "summary": "Checkout keranjang",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CheckoutRequest" } } }
+        },
+        "responses": { "200": { "description": "Checkout berhasil" } }
+      }
+    },
+    "/report/checkout-list": {
+      "get": {
+        "tags": ["Laporan"],
+        "summary": "List transaksi checkout",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "List transaksi checkout" } }
+      }
+    }
+  }
+}
