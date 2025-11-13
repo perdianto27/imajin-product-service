@@ -70,7 +70,40 @@ const getProducts = async (request, reply) => {
   }
 };
 
+
+const getProductById = async (request, reply) => {
+  try {
+    const productId = request.params.id
+    const product = await Product.findByPk(productId);
+
+    if (!product) {
+      return reply.status(StatusCodes.NOT_FOUND).send({
+        responseCode: StatusCodes.NOT_FOUND,
+        responseDesc: "Buku tidak ditemukan"
+      });
+    }
+
+    const detail = {
+      ...product.toJSON(),
+      price: Math.floor(product.price)
+    };
+
+    return reply.status(StatusCodes.OK).send({
+      responseCode: StatusCodes.OK,
+      responseDesc: "Berhasil mengambil data",
+      data: detail
+    });
+  } catch (error) {
+    Logger.log([logName, 'GET product by ID', 'ERROR'], { message: `${error}` });
+    return reply.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+      responseCode: StatusCodes.INTERNAL_SERVER_ERROR,
+      responseDesc: "Gagal mengambil data"
+    });
+  }
+};
+
 module.exports = {
   postProduct,
-  getProducts
+  getProducts,
+  getProductById
 };

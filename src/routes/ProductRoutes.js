@@ -11,5 +11,6 @@ const product = require('../controller/ProductController');
 
 Router.get('/', verifyBasic([], { optional: true }), product.getProducts);
 Router.post('/', verifyBasic([ROLE.ID.ADMIN]), validator(postProduct), product.postProduct);
+Router.get('/:id', verifyBasic([], { optional: true }), product.getProductById);
 
 module.exports = Router;
