@@ -9,7 +9,7 @@ const { postProduct } = require('../middleware/validator/schema/ProductValidatio
 const { ROLE  } = require('../helpers/constant');
 const product = require('../controller/ProductController');
 
-Router.get('/', verifyBasic(), product.getProducts);
+Router.get('/', verifyBasic([], { optional: true }), product.getProducts);
 Router.post('/', verifyBasic([ROLE.ID.ADMIN]), validator(postProduct), product.postProduct);
 
 module.exports = Router;

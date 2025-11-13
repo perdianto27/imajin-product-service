@@ -36,7 +36,8 @@ const postProduct = async (request, reply) => {
 
 const getProducts = async (request, reply) => {
   try {
-    const { roleId } = request.user;
+    const { user } = request || {};
+    const roleId = user?.roleId;
     
     let where = {};
     if (roleId === ROLE.ID.CUSTOMER) {
