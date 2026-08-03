@@ -6,6 +6,11 @@ const DB_PORT = process.env.PGPORT || 5432;
 const DB_NAME = process.env.PGDATABASE;
 const DB_USER = process.env.PGUSER;
 const DB_PASS = process.env.PGPASSWORD;
+console.log('db_host: ' + DB_HOST);
+console.log('db_port: ' + DB_PORT);
+console.log('db_name: ' + DB_NAME);
+console.log('db_user: ' + DB_USER);
+console.log('db_pass: ' + DB_PASS);
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
