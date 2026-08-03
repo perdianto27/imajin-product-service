@@ -5,11 +5,11 @@ JWT_SECRET=supersecretjwtkey123
 JWT_EXPIRES=1h
 
 # DB
-DB_HOST=host.docker.internal
-DB_PORT=3306
-DB_NAME=wom-book
-DB_USER=root
-DB_PASS=
+PGHOST=host.docker.internal
+PGPORT=5432
+PGDATABASE=wom-book
+PGUSER=root
+PGPASSWORD=
 
 # LIMITER
 TIME_REMAINING=300000

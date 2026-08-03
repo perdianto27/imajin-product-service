@@ -50,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "role_id",
       as: "role"
     });
+    User.hasMany(models.UserSession, { foreignKey: "email", sourceKey: "email", as: "sessions" });
+    User.hasOne(models.Cart, { foreignKey: "email", sourceKey: "email", as: "cart" });
+    User.hasMany(models.Order, { foreignKey: "email", sourceKey: "email", as: "orders" });
   };
 
   return User;

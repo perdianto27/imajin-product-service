@@ -50,8 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
     },
   }, {
-    tableName: "Products",
-    timestamps: false
+    tableName: "products",
+    timestamps: false,
+    underscored: true
   });
 
   Product.associate = (models) => {

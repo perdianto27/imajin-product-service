@@ -35,7 +35,9 @@ module.exports = (sequelize, DataTypes) => {
   UserSession.associate = (models) => {
     UserSession.belongsTo(models.User, {
       foreignKey: "email",
-      as: "user"
+      targetKey: "email",
+      as: "user",
+      onDelete: "CASCADE"
     });
   };
 

@@ -46,7 +46,7 @@ const removeFromCartService = async (email, productId) => {
   try {
     const cart = await Cart.findOne({ where: { email } });
     if (!cart) {
-      throw new createError('Keranjang tidak ditemukan', StatusCodes.NOT_FOUND);
+      throw createError('Keranjang tidak ditemukan', StatusCodes.NOT_FOUND);
     }
 
     const deleted = await CartItem.destroy({
@@ -54,7 +54,7 @@ const removeFromCartService = async (email, productId) => {
     });
 
     if (!deleted) {
-      throw new createError('Buku tidak ada di keranjang', StatusCodes.NOT_FOUND);
+      throw createError('Buku tidak ada di keranjang', StatusCodes.NOT_FOUND);
     }
 
     return cart;
@@ -77,12 +77,14 @@ const checkoutCartService = async (email, paymentChannel, paymentReference) => {
       transaction: t
     });
 
-    if (!cart || cart.items.length === 0) throw new createError('Keranjang kosong', StatusCodes.BAD_REQUEST);
+    if (!cart || !cart.items || cart.items.length === 0) throw createError('Keranjang kosong', StatusCodes.BAD_REQUEST);
     let totalAmount = 0;
     for (const item of cart.items) {
       const product = await Product.findOne({ where: { id: item.product_id }, lock: t.LOCK.UPDATE, transaction: t });
-      if (!product || product.stock < item.quantity) 
-      throw createError(`Stock tidak mencukupi untuk buku ${product.title}`, StatusCodes.BAD_REQUEST);
+      if (!product || product.stock < item.quantity) {
+        const productName = product ? product.name : 'Buku';
+        throw createError(`Stock tidak mencukupi untuk buku ${productName}`, StatusCodes.BAD_REQUEST);
+      }
       totalAmount += Number(product.price) * item.quantity;
     }
 

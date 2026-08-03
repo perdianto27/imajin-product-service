@@ -4,7 +4,8 @@ jest.mock('../../src/models', () => ({
   Product: {
     create: jest.fn(),
     find: jest.fn(),
-    findAll: jest.fn()
+    findAll: jest.fn(),
+    findByPk: jest.fn()
   },
   UserSession: {
     findOne: jest.fn(),
@@ -87,7 +88,7 @@ describe("Product", () => {
     UserSession.findOne.mockResolvedValue(mockSession);
 
     Product.findAll.mockResolvedValue([{
-      id: 1,
+      id: "302a3d78-6470-4471-a0d9-ed8a5f76c236",
       sku: "KK-KM-2025",
       name: "Kursi Kayu Mahoni",
       description: "Kursi kayu minimalis dengan desain ergonomis yang cocok untuk ruang tamu atau ruang makan.",
@@ -103,6 +104,44 @@ describe("Product", () => {
       .then((res) => {
         expect(res.body).toBeDefined();
         expect(Array.isArray(res.body.data)).toBe(true);
+      });
+  });
+
+  test("It should return status response 200: Successfully GET Product By ID", async () => {
+    const productId = "302a3d78-6470-4471-a0d9-ed8a5f76c236";
+    const req = {
+      body: {
+        email: "dira@gmail.com",
+        roleId: 2
+      }
+    };
+    const token = await JWTHelpers.generateToken(req.body);
+    UserSession.findOne.mockResolvedValue({ id: 64, email: "dira@gmail.com", token: token.access_token });
+
+    Product.findByPk.mockResolvedValue({
+      id: productId,
+      sku: "KK-KM-2025",
+      name: "Kursi Kayu Mahoni",
+      price: 440000.50,
+      stock: 12,
+      is_active: true,
+      toJSON: () => ({
+        id: productId,
+        sku: "KK-KM-2025",
+        name: "Kursi Kayu Mahoni",
+        price: 440000.50,
+        stock: 12,
+        is_active: true
+      })
+    });
+
+    await request(server)
+      .get(`/product/${productId}`)
+      .set('Authorization', `Bearer ${token.access_token}`)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.responseCode).toEqual(200);
+        expect(res.body.data.id).toEqual(productId);
       });
   });
 });

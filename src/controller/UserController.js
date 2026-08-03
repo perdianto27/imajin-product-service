@@ -31,6 +31,14 @@ const postUser = async (request, reply) => {
       message: `${err}`,
     });
     Logger.logToDB(ctx, err, request);
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return reply
+        .status(StatusCodes.CONFLICT)
+        .send({
+          responseCode: StatusCodes.CONFLICT,
+          responseDesc: "Email sudah terdaftar"
+        });
+    }
     return reply
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({

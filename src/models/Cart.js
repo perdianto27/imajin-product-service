@@ -21,10 +21,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: "carts",
     timestamps: false,
-    underscored: false
+    underscored: true
   });
 
   Cart.associate = (models) => {
+    Cart.belongsTo(models.User, { foreignKey: "email", targetKey: "email", as: "user", onDelete: "CASCADE" });
     Cart.hasMany(models.CartItem, { foreignKey: "cart_id", as: "items", onDelete: "CASCADE" });
   };
 

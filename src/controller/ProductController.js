@@ -25,6 +25,14 @@ const postProduct = async (request, reply) => {
     Logger.log([logName, 'POST Product', 'ERROR'], {
       message: `${err}`,
     });
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      return reply
+        .status(StatusCodes.CONFLICT)
+        .send({
+          responseCode: StatusCodes.CONFLICT,
+          responseDesc: "SKU produk sudah terdaftar"
+        });
+    }
     return reply
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send({
